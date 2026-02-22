@@ -18,10 +18,20 @@ router.get('/', (req, res) => {
             }
 
             // Parse JSON content for each resume
-            const resumes = rows.map(row => ({
-                ...row,
-                content: JSON.parse(row.content)
-            }));
+            const resumes = rows.map(row => {
+                let parsedContent = {};
+                try {
+                    parsedContent = JSON.parse(row.content);
+                } catch (_parseError) {
+                    // Keep endpoint resilient even if one stored row has malformed JSON.
+                    parsedContent = {};
+                }
+
+                return {
+                    ...row,
+                    content: parsedContent
+                };
+            });
 
             res.json(resumes);
         }
@@ -43,7 +53,9 @@ router.post('/', (req, res) => {
         [req.userId, title, contentJSON, template || 'classic'],
         function (err) {
             if (err) {
-                return res.status(500).json({ error: 'Failed to create resume' });
+                console.error('❌ Error creating resume:', err.message);
+                console.error('Stack:', err.stack);
+                return res.status(500).json({ error: 'Failed to create resume', details: err.message });
             }
 
             res.status(201).json({
@@ -84,7 +96,9 @@ router.put('/:id', (req, res) => {
                 [title, contentJSON, template, id],
                 (err) => {
                     if (err) {
-                        return res.status(500).json({ error: 'Failed to update resume' });
+                        console.error('❌ Error updating resume:', err.message);
+                        console.error('Stack:', err.stack);
+                        return res.status(500).json({ error: 'Failed to update resume', details: err.message });
                     }
 
                     res.json({ message: 'Resume updated successfully' });

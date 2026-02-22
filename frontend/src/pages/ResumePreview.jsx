@@ -25,6 +25,23 @@ const ResumePreview = () => {
         fetchResume();
     }, [id]);
 
+    useEffect(() => {
+        if (!resume?.id) return;
+
+        const logView = async () => {
+            try {
+                await api.post('/analytics/resume-event', {
+                    resumeId: resume.id,
+                    eventType: 'view',
+                });
+            } catch (_error) {
+                // Non-blocking analytics event.
+            }
+        };
+
+        logView();
+    }, [resume?.id]);
+
     const fetchResume = async () => {
         try {
             const response = await api.get('/resumes');
@@ -77,6 +94,11 @@ const ResumePreview = () => {
 
             const fileName = `${resume.content.name || 'resume'}-resume.pdf`;
             pdf.save(fileName);
+
+            await api.post('/analytics/resume-event', {
+                resumeId: resume.id,
+                eventType: 'download',
+            });
 
             toast.success('PDF downloaded successfully!', { id: 'pdf-download' });
         } catch (error) {

@@ -24,15 +24,15 @@ router.get('/', (req, res) => {
 
 // Create new job
 router.post('/', (req, res) => {
-    const { company, role, status, notes, appliedDate } = req.body;
+    const { company, role, status, notes, appliedDate, industry, responseDate } = req.body;
 
     if (!company || !role) {
         return res.status(400).json({ error: 'Company and role are required' });
     }
 
     db.run(
-        'INSERT INTO jobs (userId, company, role, status, notes, appliedDate) VALUES (?, ?, ?, ?, ?, ?)',
-        [req.userId, company, role, status || 'Applied', notes || '', appliedDate || new Date().toISOString().split('T')[0]],
+        'INSERT INTO jobs (userId, company, role, status, notes, appliedDate, industry, responseDate) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [req.userId, company, role, status || 'Applied', notes || '', appliedDate || new Date().toISOString().split('T')[0], industry || null, responseDate || null],
         function (err) {
             if (err) {
                 return res.status(500).json({ error: 'Failed to create job' });
@@ -49,7 +49,7 @@ router.post('/', (req, res) => {
 // Update job
 router.put('/:id', (req, res) => {
     const { id } = req.params;
-    const { company, role, status, notes, appliedDate } = req.body;
+    const { company, role, status, notes, appliedDate, industry, responseDate } = req.body;
 
     // First verify ownership
     db.get(
@@ -70,8 +70,8 @@ router.put('/:id', (req, res) => {
 
             // Update job
             db.run(
-                'UPDATE jobs SET company = ?, role = ?, status = ?, notes = ?, appliedDate = ? WHERE id = ?',
-                [company, role, status, notes, appliedDate, id],
+                'UPDATE jobs SET company = ?, role = ?, status = ?, notes = ?, appliedDate = ?, industry = ?, responseDate = ? WHERE id = ?',
+                [company, role, status, notes, appliedDate, industry, responseDate, id],
                 (err) => {
                     if (err) {
                         return res.status(500).json({ error: 'Failed to update job' });

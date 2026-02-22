@@ -22,10 +22,24 @@ const CreativeTemplate = ({ data }) => {
                         <span className="px-3 py-1 bg-white rounded-full shadow-sm">📍 {data.location}</span>
                     )}
                     {data.linkedin && (
-                        <span className="px-3 py-1 bg-white rounded-full shadow-sm">🔗 LinkedIn</span>
+                        <a
+                            href={data.linkedin}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-1 bg-white rounded-full shadow-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                            🔗 LinkedIn
+                        </a>
                     )}
                     {data.github && (
-                        <span className="px-3 py-1 bg-white rounded-full shadow-sm">💻 GitHub</span>
+                        <a
+                            href={data.github}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="px-3 py-1 bg-white rounded-full shadow-sm text-gray-700 hover:bg-gray-50 transition-colors"
+                        >
+                            💻 GitHub
+                        </a>
                     )}
                 </div>
             </div>

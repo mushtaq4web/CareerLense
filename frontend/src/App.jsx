@@ -1,8 +1,10 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider, useTheme } from './context/ThemeContext';
 import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
+import ThemeToggle from './components/ThemeToggle';
 
 // Pages
 import Login from './pages/Login';
@@ -12,6 +14,8 @@ import ResumeList from './pages/ResumeList';
 import ResumeBuilder from './pages/ResumeBuilder';
 import ResumePreview from './pages/ResumePreview';
 import JobTracker from './pages/JobTracker';
+import Analytics from './pages/Analytics';
+import InterviewPrep from './pages/InterviewPrep';
 
 function AppRoutes() {
     const { isAuthenticated } = useAuth();
@@ -76,42 +80,72 @@ function AppRoutes() {
                         </ProtectedRoute>
                     }
                 />
+                <Route
+                    path="/analytics"
+                    element={
+                        <ProtectedRoute>
+                            <Analytics />
+                        </ProtectedRoute>
+                    }
+                />
+                <Route
+                    path="/interview-prep"
+                    element={
+                        <ProtectedRoute>
+                            <InterviewPrep />
+                        </ProtectedRoute>
+                    }
+                />
             </Routes>
+        </>
+    );
+}
+
+function AppContent() {
+    const { isDark } = useTheme();
+
+    return (
+        <>
+            <AppRoutes />
+            <ThemeToggle />
+            <Toaster
+                position="top-right"
+                toastOptions={{
+                    duration: 3000,
+                    style: {
+                        background: isDark ? '#0f172a' : '#fff',
+                        color: isDark ? '#e2e8f0' : '#333',
+                        fontWeight: '500',
+                        border: isDark ? '1px solid #334155' : '1px solid #e2e8f0',
+                        boxShadow: isDark ? '0 10px 25px rgba(2,6,23,0.45)' : '0 10px 25px rgba(0,0,0,0.1)',
+                    },
+                    success: {
+                        iconTheme: {
+                            primary: '#10b981',
+                            secondary: '#fff',
+                        },
+                    },
+                    error: {
+                        iconTheme: {
+                            primary: '#ef4444',
+                            secondary: '#fff',
+                        },
+                    },
+                }}
+            />
         </>
     );
 }
 
 function App() {
     return (
-        <BrowserRouter>
-            <AuthProvider>
-                <AppRoutes />
-                <Toaster
-                    position="top-right"
-                    toastOptions={{
-                        duration: 3000,
-                        style: {
-                            background: '#fff',
-                            color: '#333',
-                            fontWeight: '500',
-                            boxShadow: '0 10px 25px rgba(0,0,0,0.1)',
-                        },
-                        success: {
-                            iconTheme: {
-                                primary: '#10b981',
-                                secondary: '#fff',
-                            },
-                        },
-                        error: {
-                            iconTheme: {
-                                primary: '#ef4444',
-                                secondary: '#fff',
-                            },
-                        },
-                    }}
-                />
-            </AuthProvider>
-        </BrowserRouter>
+        <ThemeProvider>
+            <BrowserRouter>
+                <AuthProvider>
+                    <AppContent />
+                </AuthProvider>
+            </BrowserRouter>
+        </ThemeProvider>
     );
 }
 

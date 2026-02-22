@@ -6,10 +6,18 @@ const ProfessionalTemplate = ({ data }) => {
             {/* Sidebar */}
             <div className="w-1/3 bg-gradient-to-b from-emerald-700 to-teal-800 text-white p-8">
                 <div className="mb-8">
-                    <div className="w-32 h-32 bg-white rounded-full mx-auto mb-4 flex items-center justify-center">
-                        <span className="text-5xl font-bold text-emerald-700">
-                            {data.name ? data.name.charAt(0) : 'Y'}
-                        </span>
+                    <div className="w-32 h-32 bg-white rounded-full mx-auto mb-4 flex items-center justify-center overflow-hidden border-4 border-white/30">
+                        {data.image ? (
+                            <img
+                                src={data.image}
+                                alt={data.name}
+                                className="w-full h-full object-cover"
+                            />
+                        ) : (
+                            <span className="text-5xl font-bold text-emerald-700">
+                                {data.name ? data.name.charAt(0) : 'Y'}
+                            </span>
+                        )}
                     </div>
                 </div>
 
@@ -20,8 +28,16 @@ const ProfessionalTemplate = ({ data }) => {
                         {data.email && <p className="break-words">✉ {data.email}</p>}
                         {data.phone && <p>☎ {data.phone}</p>}
                         {data.location && <p>📍 {data.location}</p>}
-                        {data.linkedin && <p>🔗 LinkedIn</p>}
-                        {data.github && <p>💻 GitHub</p>}
+                        {data.linkedin && (
+                            <p>
+                                🔗 <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">LinkedIn</a>
+                            </p>
+                        )}
+                        {data.github && (
+                            <p>
+                                💻 <a href={data.github} target="_blank" rel="noopener noreferrer" className="hover:underline">GitHub</a>
+                            </p>
+                        )}
                     </div>
                 </div>
 

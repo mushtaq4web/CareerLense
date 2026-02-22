@@ -12,8 +12,16 @@ const ModernTemplate = ({ data }) => {
                     {data.email && <span>✉ {data.email}</span>}
                     {data.phone && <span>☎ {data.phone}</span>}
                     {data.location && <span>📍 {data.location}</span>}
-                    {data.linkedin && <span>🔗 LinkedIn</span>}
-                    {data.github && <span>💻 GitHub</span>}
+                    {data.linkedin && (
+                        <a href={data.linkedin} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                            🔗 LinkedIn
+                        </a>
+                    )}
+                    {data.github && (
+                        <a href={data.github} target="_blank" rel="noopener noreferrer" className="hover:underline">
+                            💻 GitHub
+                        </a>
+                    )}
                 </div>
             </div>
 
