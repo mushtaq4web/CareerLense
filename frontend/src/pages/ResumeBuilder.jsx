@@ -66,25 +66,25 @@ const ResumeBuilder = () => {
         }
     };
 
-    const generateResumeAI = async () => {
-        if (!aiRole || !aiJD) { toast.error('Role and Job Description required'); return; }
-        setAiLoading(true);
-        try {
-            const res = await api.post('/ai/generate-resume', { role: aiRole, experience: aiExperience, jobDescription: aiJD });
-            setFormData(prev => ({
-                ...prev,
-                summary: res.data.summary || prev.summary,
-                skills: res.data.skills || prev.skills,
-                experience: res.data.experience || prev.experience,
-                education: res.data.education || prev.education,
-            }));
-            toast.success('AI Resume Generated!');
-        } catch {
-            toast.error('AI generation failed');
-        } finally {
-            setAiLoading(false);
-        }
-    };
+    // const generateResumeAI = async () => {
+    //     if (!aiRole || !aiJD) { toast.error('Role and Job Description required'); return; }
+    //     setAiLoading(true);
+    //     try {
+    //         const res = await api.post('/ai/generate-resume', { role: aiRole, experience: aiExperience, jobDescription: aiJD });
+    //         setFormData(prev => ({
+    //             ...prev,
+    //             summary: res.data.summary || prev.summary,
+    //             skills: res.data.skills || prev.skills,
+    //             experience: res.data.experience || prev.experience,
+    //             education: res.data.education || prev.education,
+    //         }));
+    //         toast.success('AI Resume Generated!');
+    //     } catch {
+    //         toast.error('AI generation failed');
+    //     } finally {
+    //         setAiLoading(false);
+    //     }
+    // };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -142,7 +142,7 @@ const ResumeBuilder = () => {
                     </div>
 
                     {/* AI Resume Generator */}
-                    <div className="rounded-2xl border-2 border-primary-200 dark:border-primary-800/60 overflow-hidden animate-slide-up stagger-1">
+                    {/* <div className="rounded-2xl border-2 border-primary-200 dark:border-primary-800/60 overflow-hidden animate-slide-up stagger-1">
                         <div className="bg-gradient-to-r from-primary-600 to-primary-700 px-6 py-3 flex items-center gap-2">
                             <span className="text-white text-sm font-bold">✨ AI Resume Generator</span>
                             <span className="ml-auto text-xs text-primary-200 bg-white/15 px-2 py-0.5 rounded-full">Powered by AI</span>
@@ -162,7 +162,7 @@ const ResumeBuilder = () => {
                                 ) : <>✨ Generate Resume Using AI</>}
                             </button>
                         </div>
-                    </div>
+                    </div> */}
 
                     {/* Personal Information */}
                     <div className="card animate-slide-up stagger-2">

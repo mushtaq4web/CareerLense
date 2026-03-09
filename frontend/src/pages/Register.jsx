@@ -13,7 +13,10 @@ const Register = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if (!name || !email || !password) {
+        const normalizedName = name.trim();
+        const normalizedEmail = email.trim().toLowerCase();
+
+        if (!normalizedName || !normalizedEmail || !password) {
             toast.error('Please fill in all fields');
             return;
         }
@@ -23,11 +26,15 @@ const Register = () => {
         }
         setLoading(true);
         try {
-            await register(name, email, password);
+            await register(normalizedName, normalizedEmail, password);
             toast.success('Account created successfully!');
             navigate('/dashboard');
         } catch (error) {
-            toast.error(error.response?.data?.error || 'Registration failed');
+            if (error.response?.status === 409) {
+                toast.error('Email already registered. Please sign in.');
+            } else {
+                toast.error(error.response?.data?.error || 'Registration failed');
+            }
         } finally {
             setLoading(false);
         }
@@ -105,7 +112,7 @@ const Register = () => {
 
                     <form onSubmit={handleSubmit} className="space-y-4 animate-slide-up">
                         <div>
-                            <label className="label">Full Name</label>
+                            <label className="label" htmlFor="register-name">Full Name</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                                     <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -125,7 +132,7 @@ const Register = () => {
                         </div>
 
                         <div>
-                            <label className="label">Email Address</label>
+                            <label className="label" htmlFor="register-email">Email Address</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                                     <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -145,7 +152,7 @@ const Register = () => {
                         </div>
 
                         <div>
-                            <label className="label">Password</label>
+                            <label className="label" htmlFor="register-password">Password</label>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                                     <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">

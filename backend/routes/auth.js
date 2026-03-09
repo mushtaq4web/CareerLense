@@ -8,7 +8,9 @@ const router = express.Router();
 // Register new user
 router.post('/register', async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const name = req.body?.name?.trim();
+        const email = req.body?.email?.trim().toLowerCase();
+        const password = req.body?.password;
 
         // Validation
         if (!name || !email || !password) {
@@ -26,7 +28,7 @@ router.post('/register', async (req, res) => {
             }
 
             if (row) {
-                return res.status(400).json({ error: 'Email already registered' });
+                return res.status(409).json({ error: 'Email already registered' });
             }
 
             // Hash password
