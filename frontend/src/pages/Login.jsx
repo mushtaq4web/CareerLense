@@ -79,7 +79,7 @@ const Login = () => {
 
                 {/* Footer */}
                 <div className="relative z-10">
-                    <p className="text-primary-200/60 text-xs">© 2025 CareerLense. All rights reserved.</p>
+                    <p className="text-primary-200/60 text-xs">© 2026 CareerLense. All rights reserved.</p>
                 </div>
             </div>
 
