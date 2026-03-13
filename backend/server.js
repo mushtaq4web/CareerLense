@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
+const path = require('path');
 const db = require('./database');
 
 // Import routes
@@ -25,22 +26,26 @@ app.use((req, res, next) => {
     next();
 });
 
-// Routes
+// API Routes
 app.use('/api/auth', authRoutes);
 app.use('/api/resumes', resumeRoutes);
 app.use('/api/jobs', jobRoutes);
 app.use('/api/analytics', analyticsRoutes);
 app.use('/api/interview', interviewRoutes);
-app.use("/api/ai",aiRoutes);
+app.use("/api/ai", aiRoutes);
 
 // Health check
 app.get('/api/health', (req, res) => {
     res.json({ status: 'ok', message: 'Resume Builder API is running' });
 });
 
-// 404 handler
-app.use((req, res) => {
-    res.status(404).json({ error: 'Route not found' });
+// --- Serve Frontend Static Files in Production ---
+const frontendBuildPath = path.join(__dirname, '..', 'frontend', 'dist');
+app.use(express.static(frontendBuildPath));
+
+// Catch-all: serve index.html for any non-API route (React Router SPA)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(frontendBuildPath, 'index.html'));
 });
 
 // Error handler
@@ -56,6 +61,7 @@ app.use((err, req, res, next) => {
 // Start server
 app.listen(PORT, () => {
     console.log(`\n🚀 Server running on http://localhost:${PORT}`);
-    console.log(`📊 Environment: ${process.env.NODE_ENV}`);
-    console.log(`💾 Database: SQLite\n`);
+    console.log(`📊 Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`💾 Database: SQLite`);
+    console.log(`📁 Serving frontend from: ${frontendBuildPath}\n`);
 });

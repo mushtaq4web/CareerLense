@@ -1,7 +1,9 @@
 import axios from 'axios';
 
+// In production, use relative URL '/api' (same origin).
+// In development, set VITE_API_BASE_URL=http://localhost:5000/api in frontend/.env
 const api = axios.create({
-    baseURL: import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api',
+    baseURL: import.meta.env.VITE_API_BASE_URL || '/api',
     headers: {
         'Content-Type': 'application/json',
     },

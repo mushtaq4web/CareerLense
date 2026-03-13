@@ -1,0 +1,15 @@
+{
+    "name": "careerlense",
+    "version": "1.0.0",
+    "description": "CareerLense - Resume Builder & Career Tracker",
+    "scripts": {
+        "install:frontend": "cd frontend && npm install",
+        "install:backend": "cd backend && npm install",
+        "build:frontend": "cd frontend && npm run build",
+        "build": "npm run install:frontend && npm run install:backend && npm run build:frontend",
+        "start": "cd backend && node server.js"
+    },
+    "engines": {
+        "node": ">=18.0.0"
+    }
+}
