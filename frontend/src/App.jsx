@@ -16,6 +16,8 @@ import ResumePreview from './pages/ResumePreview';
 import JobTracker from './pages/JobTracker';
 import Analytics from './pages/Analytics';
 import InterviewPrep from './pages/InterviewPrep';
+import ForgotPassword from './pages/ForgotPassword';
+import ResetPassword from './pages/ResetPassword';
 
 function AppRoutes() {
     const { isAuthenticated } = useAuth();
@@ -95,6 +97,14 @@ function AppRoutes() {
                             <InterviewPrep />
                         </ProtectedRoute>
                     }
+                />
+                <Route
+                    path="/forgot-password"
+                    element={<ForgotPassword />}
+                />
+                <Route
+                    path="/reset-password"
+                    element={<ResetPassword />}
                 />
             </Routes>
         </>

@@ -20,7 +20,9 @@ if (isProduction) {
           name TEXT NOT NULL,
           email TEXT UNIQUE NOT NULL,
           password TEXT NOT NULL,
-          "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+          "createdAt" TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+          "resetToken" TEXT,
+          "resetTokenExpiry" TIMESTAMP
         )
       `);
 
@@ -71,6 +73,14 @@ if (isProduction) {
         )
       `);
 
+      // Add reset token columns to existing users table (safe to run multiple times)
+      await client.query(`
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS "resetToken" TEXT
+      `).catch(() => {});
+      await client.query(`
+        ALTER TABLE users ADD COLUMN IF NOT EXISTS "resetTokenExpiry" TIMESTAMP
+      `).catch(() => {});
+
       console.log('✅ PostgreSQL database initialized');
     } catch (err) {
       console.error('❌ Error initializing PostgreSQL:', err.message);
@@ -105,7 +115,9 @@ if (isProduction) {
       name TEXT NOT NULL,
       email TEXT UNIQUE NOT NULL,
       password TEXT NOT NULL,
-      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP
+      createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+      resetToken TEXT,
+      resetTokenExpiry TEXT
     )`);
 
     db.run(`CREATE TABLE IF NOT EXISTS resumes (
@@ -152,6 +164,10 @@ if (isProduction) {
       FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
       FOREIGN KEY (jobId) REFERENCES jobs(id) ON DELETE CASCADE
     )`);
+
+    // Add reset token columns to existing SQLite db (ignore if already exists)
+    db.run(`ALTER TABLE users ADD COLUMN resetToken TEXT`, () => {});
+    db.run(`ALTER TABLE users ADD COLUMN resetTokenExpiry TEXT`, () => {});
   }
 
   module.exports = db;

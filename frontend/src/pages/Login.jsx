@@ -33,7 +33,6 @@ const Login = () => {
             {/* ── Left decorative panel ── */}
             <div className="hidden lg:flex lg:w-5/12 relative overflow-hidden flex-col justify-between p-12
                             bg-gradient-to-br from-primary-800 via-primary-700 to-primary-600">
-                {/* Decorative blobs */}
                 <div className="absolute top-[-60px] right-[-60px] w-72 h-72 rounded-full
                                 bg-white/10 blur-3xl animate-float" />
                 <div className="absolute bottom-[-40px] left-[-40px] w-56 h-56 rounded-full
@@ -60,7 +59,6 @@ const Login = () => {
                     <p className="text-primary-100/80 text-base leading-relaxed mb-10 max-w-xs">
                         Build standout resumes, track every application, and walk into every interview with confidence.
                     </p>
-
                     <div className="space-y-3">
                         {[
                             { icon: '📄', label: 'Professional resume builder' },
@@ -77,7 +75,6 @@ const Login = () => {
                     </div>
                 </div>
 
-                {/* Footer */}
                 <div className="relative z-10">
                     <p className="text-primary-200/60 text-xs">© 2026 CareerLense. All rights reserved.</p>
                 </div>
@@ -126,7 +123,15 @@ const Login = () => {
                         </div>
 
                         <div>
-                            <label className="label">Password</label>
+                            <div className="flex items-center justify-between mb-1">
+                                <label className="label">Password</label>
+                                <Link
+                                    to="/forgot-password"
+                                    className="text-xs text-primary-600 hover:text-primary-700 dark:text-primary-400 dark:hover:text-primary-300 font-medium"
+                                >
+                                    Forgot password?
+                                </Link>
+                            </div>
                             <div className="relative">
                                 <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none">
                                     <svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
